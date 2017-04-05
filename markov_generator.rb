@@ -1,13 +1,21 @@
+require 'lib/datasets'
+
 class MarkovGenerator
   attr_accessor :dictionary
 
+
   def initialize
+
   end
 
 
   def add_data(filename)
-    words = word_array(filename)
-    create_word_hash(words)
+    words = File.open( filename ){ |f|  f.read }
+
+    text = Text.new(words)
+    puts text.words
+    # words = word_array(filename)
+    # create_word_hash(words)
   end
 
   def new_text
@@ -36,8 +44,6 @@ class MarkovGenerator
   def weighted_random(words_and_frequencies)
     words_and_frequencies.map { |word, frequency| [word] * frequency }.flatten.sample
   end
-
-  private
 
   def create_word_hash(array_of_words)
     return_hash = {}
