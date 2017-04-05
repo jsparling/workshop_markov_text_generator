@@ -42,7 +42,7 @@ class MarkovGenerator
   def create_word_hash(array_of_words)
     return_hash = {}
     array_of_words.each do |word|
-      put word
+      puts word
     end
   end
 
@@ -55,4 +55,4 @@ mv = MarkovGenerator.new
 
 mv.add_data(ARGV.first)
 
-# puts mv.new_text
+10.times { mv.generate_sentence("never")}
