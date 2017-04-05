@@ -1,4 +1,6 @@
-require 'lib/datasets'
+$:.unshift("./lib")
+
+require 'datasets'
 
 class MarkovGenerator
   attr_accessor :dictionary
@@ -10,12 +12,8 @@ class MarkovGenerator
 
 
   def add_data(filename)
-    words = File.open( filename ){ |f|  f.read }
-
-    text = Text.new(words)
-    puts text.words
-    # words = word_array(filename)
-    # create_word_hash(words)
+    text = Datasets::File.new(filename)
+    @dictionary = text.words
   end
 
   def new_text
