@@ -50,6 +50,9 @@ class MarkovGenerator
     end
   end
 
+  def word_array(filename)
+    File.open( filename ){ |f|  f.read.split }
+  end
 end
 
 mv = MarkovGenerator.new
