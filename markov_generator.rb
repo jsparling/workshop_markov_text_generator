@@ -12,8 +12,7 @@ class MarkovGenerator
 
 
   def add_data(filename)
-    text = Datasets::File.new(filename)
-    @dictionary = text.words
+    create_word_hash(word_array(filename))
   end
 
   def new_text
