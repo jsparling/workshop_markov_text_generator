@@ -9,7 +9,7 @@ module Datasets
     def words
       @words ||= begin
         w = {}
-        all_words = @text.gsub(/[^\w\s]/, '').split(/\s+/).map(&:downcase)
+        all_words = @text.split(/\s+/).map(&:downcase)
         all_words.each_with_index do |word, i|
           break if i == all_words.length
           w[word] ||= {}
@@ -21,13 +21,15 @@ module Datasets
     end
 
     def merge(other)
+      words
       other.words.each do |word, next_words|
         if words.has_key?(word)
-          words[word] = next_words
+          @words[word] = next_words
         else
           next_words.each do |next_word, count|
-            words[word][next_word] ||= 0
-            words[word][next_word] += count
+            @words[word] ||= {}
+            @words[word][next_word] ||= 0
+            @words[word][next_word] += count
           end
         end
       end

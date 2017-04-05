@@ -5,53 +5,40 @@ require 'datasets'
 class MarkovGenerator
   attr_accessor :dictionary
 
-
   def initialize
-    @dictionary ||= {}
+    @dictionary = Datasets::Text.new("")
   end
 
-
   def add_data(filename)
-    create_word_hash(word_array(filename))
+    dictionary.merge(Datasets::File.new(filename))
   end
 
   def generate_sentence(current_word)
     sentence = ""
     until(current_word.chars.last.match(/[.!]/))
       current_word = next_word(current_word)
+      break if current_word.nil?
       sentence += " " + current_word
     end
     sentence.lstrip
   end
 
   private
-  
+
+  def words
+    dictionary.words
+  end
+
   def next_word(current_word)
-    if word_frequency = @dictionary[current_word]
+    if word_frequency = words[current_word]
       weighted_random(word_frequency)
     else
-      next_word(@dictionary.keys.sample)
+      next_word(words.keys.sample)
     end
   end
 
   def weighted_random(words_and_frequencies)
     words_and_frequencies.map { |word, frequency| [word] * frequency }.flatten.sample
-  end
-
-  def create_word_hash(array_of_words)
-    last_word = nil
-    array_of_words.each do |word|
-      if last_word
-        @dictionary[last_word] ||= {}
-        @dictionary[last_word][word] ||= 0
-        @dictionary[last_word][word] += 1
-      end
-      last_word = word
-    end
-  end
-
-  def word_array(filename)
-    File.open( filename ){ |f|  f.read.split }
   end
 end
 
