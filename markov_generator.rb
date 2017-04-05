@@ -2,6 +2,7 @@ class MarkovGenerator
   attr_accessor :dictionary
 
   def initialize
+    @dictionary ||= {}
   end
 
 
@@ -37,12 +38,15 @@ class MarkovGenerator
     words_and_frequencies.map { |word, frequency| [word] * frequency }.flatten.sample
   end
 
-  private
-
   def create_word_hash(array_of_words)
-    return_hash = {}
+    last_word = nil
     array_of_words.each do |word|
-      puts word
+      if last_word
+        @dictionary[last_word] ||= {}
+        @dictionary[last_word][word] ||= 0
+        @dictionary[last_word][word] += 1
+      end
+      last_word = word
     end
   end
 
@@ -53,7 +57,9 @@ end
 
 mv = MarkovGenerator.new
 
-mv.add_data(ARGV.first)
+ARGV.each do |file|
+  mv.add_data(file)
+end
 
 while (print "=> "; sentence = STDIN.gets)
   sentence.strip.split(" ").each do |word|
