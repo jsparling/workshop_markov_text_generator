@@ -2,11 +2,11 @@ class MarkovGenerator
   attr_accessor :dictionary
 
   def initialize
-
   end
 
-  def add_data()
-    @dictionary = [["name", 12], ["blah", 3]]
+
+  def add_data(filename)
+    words = word_array(filename)
   end
 
   def new_text
@@ -35,9 +35,16 @@ class MarkovGenerator
   def weighted_random(words_and_frequencies)
     words_and_frequencies.map { |word, frequency| [word] * frequency }.flatten.sample
   end
+
+  private
+
+  def word_array(filename)
+    File.open( filename ){ |f|  f.read.split }
+  end
 end
 
 mv = MarkovGenerator.new
-mv.add_data
+
+mv.add_data(ARGV.first)
 
 puts mv.new_text
