@@ -5,12 +5,16 @@ module Datasets
       @text = text
     end
 
+    #{ word => { next_word => count }}
     def words
       @words ||= begin
         w = {}
-        @text.split(/\s+/).map(&:downcase).each do |word|
-          w[word] ||= 0
-          w[word] += 1
+        all_words = @text.gsub(/[^\w\s]/, '').split(/\s+/).map(&:downcase)
+        all_words.each_with_index do |word, i|
+          break if i == all_words.length
+          w[word] ||= {}
+          w[word][all_words[i+1]] ||= 0
+          w[word][all_words[i+1]] += 1
         end
         w
       end

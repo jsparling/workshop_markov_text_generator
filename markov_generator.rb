@@ -28,7 +28,7 @@ class MarkovGenerator
       current_word = next_word(current_word)
       sentence += " " + current_word
     end
-    puts sentence.lstrip
+    sentence.lstrip
   end
 
   private
@@ -61,4 +61,8 @@ mv = MarkovGenerator.new
 
 mv.add_data(ARGV.first)
 
-10.times { mv.generate_sentence("never")}
+while (print "=> "; sentence = STDIN.gets)
+  sentence.strip.split(" ").each do |word|
+    puts mv.generate_sentence(word)
+  end
+end
