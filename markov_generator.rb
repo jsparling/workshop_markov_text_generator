@@ -15,10 +15,6 @@ class MarkovGenerator
     create_word_hash(word_array(filename))
   end
 
-  def new_text
-    dictionary
-  end
-
   def generate_sentence(current_word)
     sentence = ""
     until(current_word.chars.last.match(/[.!]/))
@@ -54,9 +50,6 @@ class MarkovGenerator
     end
   end
 
-  def word_array(filename)
-    File.open( filename ){ |f|  f.read.split }
-  end
 end
 
 mv = MarkovGenerator.new
