@@ -19,5 +19,18 @@ module Datasets
         w
       end
     end
+
+    def merge(other)
+      other.words.each do |word, next_words|
+        if words.has_key?(word)
+          words[word] = next_words
+        else
+          next_words.each do |next_word, count|
+            words[word][next_word] ||= 0
+            words[word][next_word] += count
+          end
+        end
+      end
+    end
   end
 end
